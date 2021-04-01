@@ -11,8 +11,6 @@ const movies = [
 ]
 
 
-// let Data = JSON.stringify(movies,null,2)
-
 
 
 app.get('/', function (req, res) {
@@ -71,6 +69,87 @@ app.get('/movies/read', function (req, res) {
 });
 
 
+
+app.get('/movies/read/by-date',  (req, res)=> {
+
+
+  function custom_sort(a, b) {
+    return new Date(a.year).getTime() - new Date(b.year).getTime();
+  }
+
+  
+  var data0=[];
+ for(let i=0;i<movies.length;i++){ data0.push(movies[i]);};
+
+ data0.sort(custom_sort);
+  res.send( {status:200,data:data0})
+
+
+
+});
+
+
+
+//second method
+// app.get('/movies/read/by-date', function (req, res) {
+  
+// var data=[];
+// for(let i=0;i<movies.length;i++){
+//     data.push(movies[i]);
+//   };
+
+//   var temp;  
+
+// for(var j=0;j<data.length;j++){
+// let j_=j+1;
+//   if(data[j_]){
+
+//   if(data[j].year>data[j_].year){
+//    temp=data[j+1];
+//    data[j+1]=data[j];
+//    data[j]=temp;
+  
+//   }
+// }
+// }
+
+
+app.get('/movies/read/by-rating', function (req, res) {
+
+  var data1=[];
+  for(let i=0;i<movies.length;i++){ data1.push(movies[i]); };
+
+  var temp;  
+
+for(var j=0;j<data1.length;j++){  
+  let j_=j+1;  
+  if(data1[j_]){
+  if(data1[j].rating<data1[j_].rating){
+   temp=data1[j+1];
+   data1[j+1]=data[j];
+   data1[j]=temp;
+  
+  }
+ }
+   }
+res.send({status:200, message: data });
+});
+
+
+
+app.get('/movies/read/by-title',  (req, res)=> {
+  
+  var data2=[];
+ for(let i=0;i<movies.length;i++){ data2.push(movies[i]);};
+
+  data2.sort(function(a,b){return a.title.toLowerCase().localeCompare(b.title.toLowerCase())})
+  res.send( {status:200,data:data2});
+
+});
+
+
+
+
 app.get('/movies/update', function (req, res) {
   res.send({status:200, message:"movies update  "});
 });
@@ -78,6 +157,13 @@ app.get('/movies/update', function (req, res) {
 app.get('/movies/delete', function (req, res) {
   res.send({status:200, message:"movies delete "});
 });
+
+
+
+
+
+
+
 
 
 
