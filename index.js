@@ -182,8 +182,25 @@ app.get('/movies/update', function (req, res) {
   res.send({status:200, message:"movies update  "});
 });
 
-app.get('/movies/delete', function (req, res) {
-  res.send({status:200, message:"movies delete "});
+app.get('/movies/delete/:id', function (req, res) {
+ 
+ 
+  // var byID=[...movies];
+
+if (req.params.id>0&req.params.id<=movies.length) 
+{
+
+  movies.splice(req.params.id-1,2);
+    
+  res.status(200).send(movies);
+
+} 
+else
+{
+  res.send({status:404, error:true, message:'the movie '+req.params.id+' does not exist'});
+}
+ 
+  // res.send({status:200, message:"movies delete "});
 });
 
 
