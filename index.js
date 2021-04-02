@@ -23,6 +23,7 @@ app.get('/test', function (req, res) {
 });
  
 
+// get time
 
 app.get('/time', function (req, res) {
 
@@ -33,11 +34,14 @@ app.get('/time', function (req, res) {
 
 
 
+// get id
 
 app.get('/hello/:id', function (req, res) {
   res.send({status:200, message:"Hello , "+req.params.id});
 });
  
+
+// provide a search  
 
 app.get('/search',function(req,res){
 
@@ -55,20 +59,23 @@ app.get('/search',function(req,res){
 
 
 
-
+//create 
 
 app.get('/movies/create', function (req, res) {
   res.send({status:200, message:"movies create "});
 });
 
 
+//standard read => return movies arrays
+
 app.get('/movies/read', function (req, res) {
-  let data=movies;
-  res.send({status:200, message: data });
+  // let data=movies;
+  res.send({status:200, message: movies });
 
 });
 
 
+// organise movies base on array
 
 app.get('/movies/read/by-date',  (req, res)=> {
 
@@ -114,6 +121,8 @@ app.get('/movies/read/by-date',  (req, res)=> {
 // }
 
 
+//organise movies base on rating
+
 app.get('/movies/read/by-rating', function (req, res) {
 
   var data1=[];
@@ -136,6 +145,7 @@ res.send({status:200, message: data });
 });
 
 
+// organise movies base on title
 
 app.get('/movies/read/by-title',  (req, res)=> {
   
@@ -148,6 +158,24 @@ app.get('/movies/read/by-title',  (req, res)=> {
 });
 
 
+// organise movies base on id
+
+app.get('/movies/read/id/:id',  (req, res)=> {
+  
+  var byID=[...movies];
+
+if (req.params.id>0&req.params.id<=byID.length) {res.status(200).send( byID[req.params.id-1])}
+// else if(req.params.id<=0){
+//   res.send( {status:200 ,message:"the id is not not exist"})
+// 
+else
+{
+   res.sendStatus(404);
+   res.send( {status:404,error:true,message:`the movie ${req.params.id} does not exist`}) 
+}
+
+});
+
 
 
 app.get('/movies/update', function (req, res) {
@@ -159,7 +187,37 @@ app.get('/movies/delete', function (req, res) {
 });
 
 
+app.get('/movies/add',function(req,res){
 
+  if(req.query.title && req.query.year && isNaN(req.query.year)===false && req.query.year.length===4 && req.query.rating){
+     
+
+      let title=req.query.title;
+      let year=req.query.year;
+      let rating=req.query.rating;
+      let newmovie={title:title,year:year,rating:rating};  
+
+      movies.push(newmovie);
+
+    
+    res.send({status:200, message: movies});
+
+  
+  }else if(req.query.title&&req.query.year&&isNaN (req.query.year)==false && req.query.year.length===4){
+
+    let rating=4;
+    let title=req.query.title;
+    let year=req.query.year;
+    let newmovie={title:title,year:year,rating:rating};
+    movies.push(newmovie);
+    res.send({status:200, message: movies});
+
+
+  }else{
+    res.send({status:403, error:true, message:'you cannot create a movie without providing a title and a year'});
+  }
+
+});
 
 
 
