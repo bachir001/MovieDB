@@ -178,13 +178,54 @@ else
 
 
 
-app.get('/movies/update', function (req, res) {
+app.get('/movies/update/:id', function (req, res) {
 
 
+  // var byID=[...movies];
 
 
+  if(req.params.id>0&&req.params.id<=movies.length&&req.query.title&&req.query.rating&&req.query.year && isNaN(req.query.year)===false && req.query.year.length===4){
+  
+    movies[req.params.id-1].title=req.query.title;
+    movies[req.params.id-1].rating=req.query.rating;
+    movies[req.params.id-1].year=req.query.year;
+    res.status(200).send(movies[req.params.id-1] );
+ 
+  }else if(req.params.id>0&&req.params.id<=movies.length&&req.query.title&&req.query.rating){
+  
+    movies[req.params.id-1].title=req.query.title;
+    movies[req.params.id-1].rating=req.query.rating;
+    
+    res.status(200).send(movies[req.params.id-1] );
+ 
+  }else if (req.params.id>0&&req.params.id<=movies.length&&req.query.title) {
 
-  res.send({status:200, message:"movies update  "});
+    movies[req.params.id-1].title=req.query.title;
+    res.status(200).send(movies[req.params.id-1] );
+  
+
+  }else if(req.params.id>0&&req.params.id<=movies.length&&req.query.year && isNaN(req.query.year)===false && req.query.year.length===4){
+
+
+    movies[req.params.id-1].year=req.query.year;
+    res.status(200).send(movies[req.params.id-1] );
+
+
+  }else if(req.params.id>0&&req.params.id<=movies.length&&req.query.rating){
+   
+    movies[req.params.id-1].rating=req.query.rating;
+    res.status(200).send(movies[req.params.id-1] );
+ 
+  }else if(req.query.year.length!=4||isNaN(req.query.year))
+  {
+    res.send({status:404, error:true, message:'the input '+req.query.year+' does not correct'});
+  } else
+  {
+    //  res.sendStatus(404);
+     res.send( {status:404,error:true,message:`the movie ${req.params.id} does not exist`}) 
+  }
+  
+  // res.send({status:200, message:"movies update  "});
 });
 
 app.get('/movies/delete/:id', function (req, res) {
@@ -192,7 +233,7 @@ app.get('/movies/delete/:id', function (req, res) {
  
   // var byID=[...movies];
 
-if (req.params.id>0&req.params.id<=movies.length) 
+if (req.params.id>0&&req.params.id<=movies.length) 
 {
 
   movies.splice(req.params.id-1,1);
