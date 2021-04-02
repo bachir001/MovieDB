@@ -179,6 +179,11 @@ else
 
 
 app.get('/movies/update', function (req, res) {
+
+
+
+
+
   res.send({status:200, message:"movies update  "});
 });
 
@@ -190,7 +195,7 @@ app.get('/movies/delete/:id', function (req, res) {
 if (req.params.id>0&req.params.id<=movies.length) 
 {
 
-  movies.splice(req.params.id-1,2);
+  movies.splice(req.params.id-1,1);
     
   res.status(200).send(movies);
 
