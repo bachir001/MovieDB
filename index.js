@@ -61,14 +61,14 @@ app.get('/search',function(req,res){
 
 //create 
 
-app.get('/movies/create', function (req, res) {
-  res.send({status:200, message:"movies create "});
-});
+// app.get('/movies/create', function (req, res) {
+//   res.send({status:200, message:"movies create "});
+// });
 
 
 //standard read => return movies arrays
 
-app.get('/movies/read', function (req, res) {
+app.get('/movies', function (req, res) {
   // let data=movies;
   res.send({status:200, message: movies });
 
@@ -77,7 +77,7 @@ app.get('/movies/read', function (req, res) {
 
 // organise movies base on array
 
-app.get('/movies/read/by-date',  (req, res)=> {
+app.get('/movies/by-date',  (req, res)=> {
 
 
   function custom_sort(a, b) {
@@ -123,7 +123,7 @@ app.get('/movies/read/by-date',  (req, res)=> {
 
 //organise movies base on rating
 
-app.get('/movies/read/by-rating', function (req, res) {
+app.get('/movies/by-rating', function (req, res) {
 
   var data1=[];
   for(let i=0;i<movies.length;i++){ data1.push(movies[i]); };
@@ -147,7 +147,7 @@ res.send({status:200, message: data });
 
 // organise movies base on title
 
-app.get('/movies/read/by-title',  (req, res)=> {
+app.get('/movies/by-title',  (req, res)=> {
   
   var data2=[];
  for(let i=0;i<movies.length;i++){ data2.push(movies[i]);};
@@ -160,7 +160,7 @@ app.get('/movies/read/by-title',  (req, res)=> {
 
 // organise movies base on id
 
-app.get('/movies/read/id/:id',  (req, res)=> {
+app.get('/movies/id/:id',  (req, res)=> {
   
   var byID=[...movies];
 
@@ -177,8 +177,9 @@ else
 });
 
 
+// update specific movie data depending on id
 
-app.get('/movies/update/:id', function (req, res) {
+app.put('/movies/:id', function (req, res) {
 
 
   // var byID=[...movies];
@@ -228,7 +229,10 @@ app.get('/movies/update/:id', function (req, res) {
   // res.send({status:200, message:"movies update  "});
 });
 
-app.get('/movies/delete/:id', function (req, res) {
+
+// delete a specific movie depending on id
+
+app.delete('/movies/:id', function (req, res) {
  
  
   // var byID=[...movies];
@@ -250,7 +254,7 @@ else
 });
 
 
-app.get('/movies/add',function(req,res){
+app.post('/movies',function(req,res){
 
   if(req.query.title && req.query.year && isNaN(req.query.year)===false && req.query.year.length===4 && req.query.rating){
      
